@@ -42,43 +42,58 @@ public class HomePage
 	    WebElement category = wait.until(
 	    		ExpectedConditions.elementToBeClickable(By.xpath("//h6[text()='" + categoryName + "']")));
 	    category.click();
-	
-	    // Get all Add buttons
-	    List<WebElement> addButtons = wait.until(
-	    		ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//button[contains(text(),'+')]")));
-	
+	    
+	    // Get all Products
+	    List<WebElement> products = driver.findElements(By.xpath("//div[@class='product']"));
+	    System.out.println("No. of Products- " + products.size());
+
 	    // Validation
-	    if (addButtons.isEmpty()) 
+	    if (products.isEmpty()) 
 	    {
 	        throw new RuntimeException("No products available in category: " + categoryName);
 	    }
-	
+	    Thread.sleep(2000);
+	    
 	    // Random selection
 	    Random random = new Random();
-	    int randomIndex = random.nextInt(addButtons.size());
-	    WebElement selectedProduct = addButtons.get(randomIndex);
+	    int randomIndex = random.nextInt(products.size());
+	    //WebElement selectedProduct = products.get(randomIndex);
+	    System.out.println(randomIndex);
 	    System.out.println("Adding random product from category: " + categoryName);
 	
+	    Thread.sleep(2000);
+
+		// Re-fetch products again (IMPORTANT)
+		products = driver.findElements(By.xpath("//div[@class='product']"));
+		WebElement selectedProduct = products.get(randomIndex);
+		    
+		String productName = driver.findElement(By.xpath("(//div[@class='product_name'])[" + randomIndex + "]")).getText();
+	    System.out.println("Selected Product: " + productName);
+	    Thread.sleep(2000);
 	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    // Click Add
-	    wait.until(ExpectedConditions.elementToBeClickable(selectedProduct)).click();
-	    
+	    //Get Coordinate of selected product
+	    int Product_position = selectedProduct.getLocation().getY();
+	    System.out.println("Y Coordinate of selected product : " + Product_position);
+	    js.executeScript("window.scrollBy(0, arguments[0]);", Product_position);
+	    Thread.sleep(2000);
+	    js.executeScript("window.scrollBy(0,-400)");
+	    Thread.sleep(2000);
+  
+	    // Click on Add(+) button of selected product
+	    selectedProduct.findElement(By.xpath("(//button[contains(text(),'+')])[" + randomIndex + "]")).click();
+	    //System.out.println("selectedProduct- " + selectedProduct);
+	   
 	    //Handle Variant product
-	    String Variant = driver.findElement(By.xpath("//*[text()='Done']")).getText();
-	    if(Variant.equalsIgnoreCase("Done"));
+	    String Variant = driver.findElement(By.xpath("(//div[@class='product']//span[contains(.,'options')])[" + randomIndex + "]")).getText();
+	    System.out.println(Variant);
+	    if(Variant.equalsIgnoreCase("Done"))
 	    {
 	    	driver.findElement(By.xpath("(//button[@class='qty-btn varient-btn-plus'])[1]")).click();
 	    	driver.findElement(By.xpath("//*[text()='Done']")).click();
+	    }
+	    else
+	    {
+	    	
 	    }
 	    	
 	    Navigate_HomePage();
@@ -100,4 +115,78 @@ public class HomePage
     }
         
 }
+
+/*
+-----------------------------------------------------------------------
+
+
+
+
+// Get all Add buttons
+List<WebElement> addButtons = wait.until(
+		ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//button[contains(text(),'+')]")));
+
+
+// Random selection
+Random random = new Random();
+int randomIndex = random.nextInt(addButtons.size());
+WebElement selectedProduct = addButtons.get(randomIndex);
+System.out.println("Adding random product from category: " + categoryName);
+
+
+
+
+int Product_position = selectedProduct.getLocation().getY();
+
+System.out.println("Y Coordinate: " + Product_position);
+
+js.executeScript("window.scrollBy(0, arguments[0]);", Product_position);
+Thread.sleep(2000);
+js.executeScript("window.scrollBy(0,-450)");
+Thread.sleep(2000);
+selectedProduct.click();
+System.out.println("selectedProduct- " + selectedProduct);
+
+
+
+
+
+
+
+
+// Click Add
+//wait.until(ExpectedConditions.elementToBeClickable(selectedProduct)).click();
+
+//Handle Variant product
+String Variant = driver.findElement(By.xpath("//*[text()='Done']")).getText();
+System.out.println(Variant);
+if(Variant.equalsIgnoreCase("Done"))
+{
+	driver.findElement(By.xpath("(//button[@class='qty-btn varient-btn-plus'])[1]")).click();
+	driver.findElement(By.xpath("//*[text()='Done']")).click();
+}
+else
+{
+	
+}
+
+
+/*
+ * 
+ * if that perticular product contains options then 
+ * 
+     if(Variant.equalsIgnoreCase("Done"))
+    {
+    	driver.findElement(By.xpath("(//button[@class='qty-btn varient-btn-plus'])[1]")).click();
+    	driver.findElement(By.xpath("//*[text()='Done']")).click();
+    }
+    else
+    {
+    	
+    }
+ * 
+ * 
+ * 
+ */
+
 

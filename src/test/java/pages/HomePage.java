@@ -15,9 +15,9 @@ import com.google.errorprone.annotations.Var;
 
 public class HomePage 
 {
-
     WebDriver driver;
     WebDriverWait wait;
+    JavascriptExecutor js;
 
     // Constructor
     public HomePage(WebDriver driver) 
@@ -30,20 +30,21 @@ public class HomePage
     public void addRandomProductFromCategory(String categoryName) throws InterruptedException
     {
     	Thread.sleep(2500);
-		
+    	
 		WebElement Categories = driver.findElement(By.xpath("//h5[text()='Categories']"));
-    	JavascriptExecutor js = (JavascriptExecutor) driver;
+    	js = (JavascriptExecutor) driver;
     	js.executeScript("arguments[0].scrollIntoView({block:'center'});",Categories);
 		Thread.sleep(1000);
     	
 	    // Open category
+		System.out.println("category Name = " +categoryName);
 	    WebElement category = wait.until(
 	    		ExpectedConditions.elementToBeClickable(By.xpath("//h6[text()='" + categoryName + "']")));
 	    category.click();
 	    
 	    // Get all Products
 	    List<WebElement> products = driver.findElements(By.xpath("//div[@class='product']"));
-	    System.out.println("No. of Products- " + products.size());
+	    System.out.println("No. of Products in " + categoryName + " category = " + products.size());
 
 	    // Validation
 	    if (products.isEmpty()) 
@@ -55,17 +56,20 @@ public class HomePage
 	    // Random selection
 	    Random random = new Random();
 	    int randomIndex = random.nextInt(products.size());
+	    System.out.println("randomIndex = " + randomIndex);
 	    //WebElement selectedProduct = products.get(randomIndex);
-	    System.out.println(randomIndex);
+	    int productIndex = randomIndex + 1;
+	    System.out.println("product Index = " + productIndex);
+	    
 	    System.out.println("Adding random product from category: " + categoryName);
 	
 	    Thread.sleep(2000);
 
-		// Re-fetch products again (IMPORTANT)
+		// Re-fetch products again
 		products = driver.findElements(By.xpath("//div[@class='product']"));
 		WebElement selectedProduct = products.get(randomIndex);
 		    
-		String productName = driver.findElement(By.xpath("(//div[@class='product_name'])[" + randomIndex + "]")).getText();
+		String productName = driver.findElement(By.xpath("(//div[@class='product_name'])[" + productIndex + "]")).getText();
 	    System.out.println("Selected Product: " + productName);
 	    Thread.sleep(2000);
 	    
@@ -84,19 +88,19 @@ public class HomePage
 	   
 	    //Handle Variant product
 	    //String Variant = driver.findElement(By.xpath("(//div[@class='product'])[" + randomIndex + "]//span[contains(.,'options')]")).getText();
-	    String Variant = driver.findElement(By.xpath("(//div[@class='product'])[" + randomIndex + "]")).getText();
+	    String productDetails = driver.findElement(By.xpath("(//div[@class='product'])[" + productIndex + "]")).getText();
 
-	    System.out.println("Variant : "+Variant);
-	    if(Variant.contains("options"))
+	    System.out.println("Product Details = " + productDetails);
+	    if(productDetails.contains("options"))
 	    {
-	    	selectedProduct.findElement(By.xpath("(//button[contains(text(),'+')])[" + randomIndex + "]")).click();
+	    	selectedProduct.findElement(By.xpath("(//button[contains(text(),'+')])[" + productIndex + "]")).click();
 	    	Thread.sleep(2000);
 	    	driver.findElement(By.xpath("(//button[@class='qty-btn varient-btn-plus'])[1]")).click();
 	    	driver.findElement(By.xpath("//*[text()='Done']")).click();
 	    }
 	    else
 	    {
-	    	selectedProduct.findElement(By.xpath("(//button[contains(text(),'+')])[" + randomIndex + "]")).click();
+	    	selectedProduct.findElement(By.xpath("(//button[contains(text(),'+')])[" + productIndex + "]")).click();
 	    }
 	    	
 	    Navigate_HomePage();
@@ -106,6 +110,8 @@ public class HomePage
     public void Navigate_HomePage() throws InterruptedException
     {
     	//Home Button
+    	js.executeScript("window.scrollTo(0, 0);");
+    	Thread.sleep(1000);
 	    driver.findElement(By.xpath("//img[contains(@class,'fluid desktop-logo')]")).click();
 	    Thread.sleep(1000);
     }
@@ -189,7 +195,7 @@ else
     }
  * 
  * 
- * 
+ *  
  */
 
 

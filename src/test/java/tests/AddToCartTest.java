@@ -21,8 +21,10 @@ public class AddToCartTest extends BaseTest {
     public void addProductsFromCategories() throws InterruptedException 
     {
         homePage.addRandomProductFromCategory("Fruits");
+        System.out.println("--------------------------------");
         homePage.addRandomProductFromCategory("Vegetables");
-       // homePage.addRandomProductFromCategory("Snacks");  
+        System.out.println("--------------------------------");
+        homePage.addRandomProductFromCategory("Test Honey");  
         
         homePage.Click_on_Cart_Icon();
     }

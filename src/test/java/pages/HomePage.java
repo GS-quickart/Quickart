@@ -76,18 +76,8 @@ public class HomePage
 	    //Get Coordinate of selected product
 	    js.executeScript("arguments[0].scrollIntoView({block:'center'});",selectedProduct);
 	    Thread.sleep(2000);
-/*
-	    int Product_position = selectedProduct.getLocation().getY();
-	    System.out.println("Y Coordinate of selected product : " + Product_position);
-	    js.executeScript("window.scrollBy(0, arguments[0]);", Product_position);
-	    Thread.sleep(2000);
-	    js.executeScript("window.scrollBy(0,-400)");
-	    Thread.sleep(2000);
-  */
-  
-	   
+
 	    //Handle Variant product
-	    //String Variant = driver.findElement(By.xpath("(//div[@class='product'])[" + randomIndex + "]//span[contains(.,'options')]")).getText();
 	    String productDetails = driver.findElement(By.xpath("(//div[@class='product'])[" + productIndex + "]")).getText();
 
 	    System.out.println("Product Details = " + productDetails);

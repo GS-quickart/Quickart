@@ -71,7 +71,7 @@ public class HomePage
 	    System.out.println("Selected Product: " + productName);
 	    Thread.sleep(2000);
 	    
-	    //Get Coordinate of selected product
+	    // Scroll product at the center of the page
 	    js.executeScript("arguments[0].scrollIntoView({block:'center'});",selectedProduct);
 	    Thread.sleep(2000);
 
@@ -91,8 +91,6 @@ public class HomePage
 	    	selectedProduct.findElement(By.xpath("(//button[contains(text(),'+')])[" + productIndex + "]")).click();
 	    }
 	    	
-	    Navigate_HomePage();
-	      
     }
     
     public void Navigate_HomePage() throws InterruptedException
@@ -101,7 +99,6 @@ public class HomePage
     	js.executeScript("window.scrollTo(0, 0);");
     	Thread.sleep(1000);
 	    driver.findElement(By.xpath("//img[contains(@class,'fluid desktop-logo')]")).click();
-	    Thread.sleep(1000);
     }
     
     public void Click_on_Cart_Icon() throws InterruptedException
@@ -109,8 +106,7 @@ public class HomePage
     	//Click on cart Icon
     	Thread.sleep(1000);
     	driver.findElement(By.xpath("(//li[contains(@class,'cart-btn')])[1]")).click();
-    }
-        
+    }     
 }
 
 /*

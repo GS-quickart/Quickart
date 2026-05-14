@@ -13,7 +13,7 @@ public class AddToCartTest extends BaseTest {
     @BeforeMethod
     public void start() throws InterruptedException 
     {
-    	setup();
+    	startbrowser();
         homePage = new HomePage(driver);
     }
     
@@ -21,10 +21,13 @@ public class AddToCartTest extends BaseTest {
     public void addProductsFromCategories() throws InterruptedException 
     {
         homePage.addRandomProductFromCategory("Fruits");
+        homePage.Navigate_HomePage();
         System.out.println("--------------------------------");
         homePage.addRandomProductFromCategory("Vegetables");
+        homePage.Navigate_HomePage();
         System.out.println("--------------------------------");
         homePage.addRandomProductFromCategory("Test Honey");  
+        homePage.Navigate_HomePage();
         
         homePage.Click_on_Cart_Icon();
     }

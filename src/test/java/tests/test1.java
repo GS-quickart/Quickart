@@ -1,12 +1,9 @@
 package tests;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -15,7 +12,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.Test;
 
 public class test1 {
 
@@ -83,28 +79,20 @@ public class test1 {
 	    		ExpectedConditions.elementToBeClickable(By.xpath("//h6[text()='Fruits']")));
 	    category.click();
 	    
-	    Thread.sleep(5000);
+	    Thread.sleep(3000);
 	  
-	    WebElement abc = driver.findElement(By.xpath("(//button[contains(text(),'+')])[5]"));
-	    /*  
-	   	js.executeScript("arguments[0].scrollIntoView(true);", abc);
-    	Thread.sleep(2000);
-    	js.executeScript("window.scrollBy(0,-400);");
-	   */
+	    WebElement products = driver.findElement(By.xpath("(//div[@class='product'])[1]"));
 	    
-	    while (!abc.isDisplayed()) {
-
-	        js.executeScript("window.scrollBy(0,100)");
-
-	        Thread.sleep(2000);
-	    }
-	    js.executeScript("window.scrollBy(0,100)");
-	    Thread.sleep(2000);
+	    //String productName = products.findElement(By.xpath("(//div[@class='product'])[1]//div[@class='product_name']")).getText();
+	    String productName = products.findElement(By.xpath("//div[@class='product_name']")).getText();
 	    
-	    abc.click();
+	    
+	    System.out.println("Selected Product: " + productName);
+	 
+	    
 	    
 	    
 	}
 	
-
+ 
 }

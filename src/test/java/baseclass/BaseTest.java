@@ -11,10 +11,19 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import pages.HomePage;
+
 public class BaseTest
 {
     public WebDriver driver;
     WebDriverWait wait;
+    
+    public void startbrowser() throws InterruptedException 
+    {
+    	setup();
+    	User_SignUp();
+    }
+    
     
     public void setup() throws InterruptedException
     {
@@ -32,7 +41,6 @@ public class BaseTest
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.get("https://demoweb-production-7099.up.railway.app/");
         
-        User_SignUp();
     }
     
     public void User_SignUp() throws InterruptedException

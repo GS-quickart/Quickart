@@ -13,6 +13,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import baseclass.BaseTest;
 import pages.HomePage;
 
+/*
+- Get all filters
+- Verify total number of filters
+- Click each filter one by one
+- Count products displayed inside each filter
+- Print filter name + product count
+*/
+
 public class Verify_Filter_by_Tags extends BaseTest 
 {
 	HomePage homePage;
@@ -72,15 +80,53 @@ public class Verify_Filter_by_Tags extends BaseTest
 	            System.out.println("No products found under "+ filterName);
 	        }
 	        
+	        verifyProductContainsTag(filterName);
+	        
+	        //Navigate to homepage
 	        driver.navigate().back();
 	        wait.until(ExpectedConditions.urlToBe("https://demoweb-production-7099.up.railway.app/"));
             Thread.sleep(1000);
+            System.out.println("-------------------------");
 	    }
 	}	
 	
-		@AfterTest
-		public void Quit_application() 
-		{
-			driver.quit();
-		}
+	public void verifyProductContainsTag(String filterName)
+	{
+		boolean allProductsHaveTag = true;
+
+	    // Get all products
+	    List<WebElement> products = driver.findElements(By.xpath("//div[@class='product']"));
+		
+	    // Loop through all products
+	    for (int i = 0; i < products.size(); i++)
+	    {
+	        // Get product name
+	        WebElement product = products.get(i);
+	        String productName = product.findElement(By.xpath("//div[@class='product_name']")).getText();
+	
+	        // Check if Natural tag exists
+	        String formattedTag =filterName.toLowerCase().replace(" ", "_");
+	        List<WebElement> productTag = product.findElements(By.xpath("//img[contains(@src,'"+ formattedTag + "')]"));
+
+	        // Validation
+	        if (productTag.isEmpty())
+	        {
+	        	allProductsHaveTag = false;
+	        	System.out.println(productName+ " does NOT contain "+ formattedTag+ " tag");
+	        }   
+	    }
+	    
+	    if (allProductsHaveTag)
+	    {
+        	System.out.println("All products contain "+ filterName+ " tag");
+        }
+	}
+	
+	@AfterTest
+	public void Quit_application() 
+	{
+		driver.quit();
+	}
 }
+
+

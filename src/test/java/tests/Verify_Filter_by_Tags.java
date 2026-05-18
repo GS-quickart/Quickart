@@ -1,5 +1,6 @@
 package tests;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import org.testng.annotations.*;
@@ -19,6 +20,8 @@ import pages.HomePage;
 - Click each filter one by one
 - Count products displayed inside each filter
 - Print filter name + product count
+- verify Product Contains Tag
+- Print product who does NOT contain tag
 */
 
 public class Verify_Filter_by_Tags extends BaseTest 
@@ -26,7 +29,7 @@ public class Verify_Filter_by_Tags extends BaseTest
 	HomePage homePage;
 	
 	@BeforeMethod
-    public void start() throws InterruptedException 
+    public void start() throws InterruptedException, IOException 
     {
     	startbrowser();
         homePage = new HomePage(driver);
@@ -126,7 +129,7 @@ public class Verify_Filter_by_Tags extends BaseTest
 	public void Quit_application() 
 	{
 		driver.quit();
-	}
+	} 
 }
 
 

@@ -5,6 +5,7 @@ package tests;
 - close the suggestion popup and again search another product
 */
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
@@ -25,26 +26,29 @@ public class Verify_Searched_suggestions_displayed extends BaseTest
 	HomePage homePage;
 
     @BeforeMethod
-    public void start() throws InterruptedException 
+    public void start() throws InterruptedException, IOException 
     {
     	startbrowser();
         homePage = new HomePage(driver);
     }
     
     @Test
-    public void t1() throws InterruptedException
+    public void Verify_Searched_suggestions_displayed() throws InterruptedException
     {
     	Thread.sleep(5000);
-    	searchProduct("tomato");
+    	searchProduct("paneer");
     	System.out.println("--------------------------");
     	
     	WebElement searchField = driver.findElement(By.xpath("//input[@id='searchInput']"));
     	searchField.clear();
     	
-    	searchProduct("potato");
+    	Thread.sleep(1000);
+    	searchProduct("milk");
     	searchField.sendKeys(Keys.ENTER);
     	
-    	
+    	Thread.sleep(2000);
+    	Verify_serached_products();
+
     }
 
     public void searchProduct(String searchitem) throws InterruptedException
@@ -68,14 +72,28 @@ public class Verify_Searched_suggestions_displayed extends BaseTest
 		}
     }
     	
+    public void Verify_serached_products()
+    {
+    	List<WebElement> products = driver.findElements(By.xpath("//div[@class='product']"));
+    	System.out.println("No. of Products = " + products.size());
+ 
+    	List<WebElement> productName=driver.findElements(By.xpath("//div[@class='product_name']"));
+
+    	for (WebElement product : productName)
+    	{
+    		String nameText = product.getText();
+    		if (nameText.toLowerCase().contains("milk")){
+    			System.out.println("PASS - Product contains milk");
+    	    } 
+    		else {
+    	        System.out.println("FAIL - Product does not contain milk");
+    	    }
+		}    	
+    }
+    
     @AfterTest
 	public void Quit_application() 
 	{
 		driver.quit();
-	} 
-    
-    
-    
-    					//verify all the products are tomato
-    
+	}     
 }

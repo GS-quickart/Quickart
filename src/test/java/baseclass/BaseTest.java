@@ -1,8 +1,11 @@
 package baseclass;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -17,15 +20,15 @@ public class BaseTest
 {
     public WebDriver driver;
     WebDriverWait wait;
+    Properties propertiesobj;
     
-    public void startbrowser() throws InterruptedException 
+    public void startbrowser() throws InterruptedException, IOException 
     {
     	setup();
     	User_SignUp();
     }
     
-    
-    public void setup() throws InterruptedException
+    public void setup() throws InterruptedException, IOException
     {
     	//Handle Notification
     	ChromeOptions options = new ChromeOptions();
@@ -39,8 +42,15 @@ public class BaseTest
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        driver.get("https://demoweb-production-7099.up.railway.app/");
         
+        propertiesobj = new Properties();
+		FileInputStream file = new FileInputStream(
+		        System.getProperty("user.dir") + "/src/test/resources/config.properties"
+		);
+		propertiesobj.load(file);
+		 
+		String quickartUrl = propertiesobj.getProperty("Quickaet_url");
+		driver.get(quickartUrl); 
     }
     
     public void User_SignUp() throws InterruptedException
@@ -48,7 +58,10 @@ public class BaseTest
 		 driver.findElement(By.xpath("//a[@title='Sign in']")).click();
 		 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(.,'Login / SignUp')]")));
 		 Thread.sleep(2000);
-		 driver.findElement(By.id("mobile_code")).sendKeys("541234567");
+		 
+		 String Mob_no = propertiesobj.getProperty("Mob_no");
+		 driver.findElement(By.id("mobile_code")).sendKeys(Mob_no);
+		 
 		 driver.findElement(By.xpath("//button[@class='submit_btn otp_request']")).click();
 		 
 		 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='Verify & Continue']")));
@@ -60,5 +73,10 @@ public class BaseTest
 		 
 		 driver.findElement(By.xpath("//button[text()='Verify & Continue']")).click();
 	} 
+    
+    public void Quit_application() 
+	{
+		driver.quit();
+	}
 }
 	

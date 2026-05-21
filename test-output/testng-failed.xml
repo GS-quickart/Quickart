@@ -3,12 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="tests.Verify_Repeat_order_functionality">
+      <class name="tests.Add_to_cart">
         <methods>
-          <include name="t123"/>
+          <include name="Quit_application"/>
+          <include name="complete_payment"/>
           <include name="start"/>
         </methods>
-      </class> <!-- tests.Verify_Repeat_order_functionality -->
+      </class> <!-- tests.Add_to_cart -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

@@ -23,6 +23,7 @@ import pages.HomePage;
 
 public class Verify_Searched_suggestions_displayed extends BaseTest 
 {	
+	WebDriverWait wait =new WebDriverWait(driver, Duration.ofSeconds(10));
 	HomePage homePage;
 
     @BeforeMethod
@@ -37,6 +38,7 @@ public class Verify_Searched_suggestions_displayed extends BaseTest
     {
     	Thread.sleep(5000);
     	searchProduct("paneer");
+    	print_all_suggested_products();
     	System.out.println("--------------------------");
     	
     	WebElement searchField = driver.findElement(By.xpath("//input[@id='searchInput']"));
@@ -44,6 +46,7 @@ public class Verify_Searched_suggestions_displayed extends BaseTest
     	
     	Thread.sleep(1000);
     	searchProduct("milk");
+    	print_all_suggested_products();
     	searchField.sendKeys(Keys.ENTER);
     	
     	Thread.sleep(2000);
@@ -53,13 +56,17 @@ public class Verify_Searched_suggestions_displayed extends BaseTest
 
     public void searchProduct(String searchitem) throws InterruptedException
     {
-    	WebDriverWait wait =new WebDriverWait(driver, Duration.ofSeconds(10));
-
+    	
     	WebElement searchField = wait.until(
     			ExpectedConditions.elementToBeClickable((By.xpath("//input[@id='searchInput']"))));
     	
     	searchField.sendKeys(searchitem);
     	System.out.println("Searched product is - " +searchitem );
+    	
+    }
+    
+    public void print_all_suggested_products()
+    {
     	//print all the suggested products
 		List<WebElement> suggestedProducts = wait.until(
 				ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//div[@class='suggestion-item']")));
